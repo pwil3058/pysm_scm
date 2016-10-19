@@ -17,4 +17,3 @@
 
 from .events import *
 from . import ifce
-from . import gui
