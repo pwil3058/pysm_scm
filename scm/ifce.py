@@ -55,21 +55,7 @@ def get_ifce(dir_path=None):
 
 class _NULL_BACKEND:
     name = "os"
-    cmd_label = "null"
     in_valid_pgnd = False
-    pgnd_is_mutable = False
-    @staticmethod
-    def copy_clean_version_to(filepath, target_name):
-        '''
-        Copy a clean version of the named file to the specified target
-        '''
-        assert False, "Should not be called for null interface"
-    @staticmethod
-    def get_file_status_digest():
-        '''
-        Get the Sha1 digest of the SCM view of the files' status
-        '''
-        return None
     @staticmethod
     def get_files_with_uncommitted_changes(files=None):
         '''
@@ -78,15 +64,6 @@ class _NULL_BACKEND:
         '''
         return []
     @staticmethod
-    def get_playground_root():
-        return None
-    @staticmethod
-    def get_revision(filepath=None):
-        '''
-        Return the SCM revision for the named file or the whole playground
-        if the filepath is None
-        '''
-        return None
     @staticmethod
     def is_ready_for_import():
         '''
