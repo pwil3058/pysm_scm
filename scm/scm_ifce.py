@@ -55,7 +55,7 @@ def get_current_ifce(dir_path=None):
 
 class _NULL_BACKEND:
     name = "os"
-    in_valid_pgnd = False
+    in_valid_wspce = False
     @staticmethod
     def get_files_with_uncommitted_changes(files=None):
         '''
