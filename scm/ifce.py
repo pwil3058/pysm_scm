@@ -49,7 +49,7 @@ def playground_type(dir_path=None):
             return bname
     return None
 
-def get_ifce(dir_path=None):
+def get_current_ifce(dir_path=None):
     pgt = playground_type(dir_path)
     return _NULL_BACKEND if pgt is None else _BACKEND[pgt]
 
@@ -64,6 +64,8 @@ class _NULL_BACKEND:
         '''
         return []
     @staticmethod
+    def do_import_patch(patch_file_name):
+        return NotImplemented
     @staticmethod
     def is_ready_for_import():
         '''
