@@ -19,7 +19,7 @@
 Provide an interface for the GUI to access the SCM controlling the source
 '''
 
-from ..gtx.table import NullTableData as DummyTableData
+from ...gtx.table import NullTableData as DummyTableData
 
 _BACKEND = {}
 _MISSING_BACKEND = {}
@@ -38,7 +38,7 @@ def backend_requirements():
     return msg
 
 def report_backend_requirements():
-    from ..gtx import dialogue
+    from ...gtx import dialogue
     dialogue.main_window.inform_user(backend_requirements(), parent=parent)
 
 def avail_backends():
@@ -68,7 +68,7 @@ def choose_scm_backend():
         return None
     elif len(bel) == 1:
         return bel[0]
-    from ..gtx import dialogue
+    from ...gtx import dialogue
     return dialogue.SelectFromListDialog(olist=bel, prompt=_('Choose SCM back end:')).make_selection()
 
 class _NULL_BACKEND:
@@ -130,7 +130,7 @@ class _NULL_BACKEND:
         return []
     @staticmethod
     def get_index_file_db():
-        from ..gtx import fsdb
+        from ...gtx import fsdb
         return fsdb.NullFileDb()
     @staticmethod
     def get_parents_data(rev=None):
@@ -162,7 +162,7 @@ class _NULL_BACKEND:
         '''
         Get the SCM view of the current directory
         '''
-        from ..gtx import fsdb
+        from ...gtx import fsdb
         return fsdb.OsFileDb()
     @staticmethod
     def is_ready_for_import():
@@ -192,18 +192,18 @@ def reset_pm_ifce(events=0):
     return events
 
 def check_interfaces(args):
-    from ..bab import enotify
+    from ...bab import enotify
     events = 0
     curr_scm = SCM
     reset_scm_ifce()
     if curr_scm != SCM:
-        from ..scm import E_NEW_SCM
+        from .. import E_NEW_SCM
         events |= E_NEW_SCM
         if SCM.in_valid_wspce:
             import os
-            from ..bab import options
-            from ..gtx import recollect
-            from ..scm_gui import scm_wspce
+            from ...bab import options
+            from ...gtx import recollect
+            from . import scm_wspce
             newdir = SCM.get_playground_root()
             if not os.path.samefile(newdir, os.getcwd()):
                 os.chdir(newdir)
@@ -216,18 +216,18 @@ def check_interfaces(args):
 
 def init_current_dir(backend):
     import os
-    from ..bab import enotify
+    from ...bab import enotify
     result = create_new_playground(os.getcwd(), backend)
     events = 0
     curr_scm = SCM
     reset_scm_ifce()
     if curr_scm != SCM:
-        from ..scm import E_NEW_SCM
+        from .. import E_NEW_SCM
         events |= E_NEW_SCM
     events |= reset_pm_ifce(events)
     if SCM.in_valid_wspce:
-        from ..scm_gui import scm_wspce
-        from ..gtx import recollect
+        from . import scm_wspce
+        from ...gtx import recollect
         curr_dir = os.getcwd()
         scm_wspce.add_workspace_path(curr_dir)
         recollect.set("workspace", "last_used", curr_dir)
@@ -237,22 +237,22 @@ def init_current_dir(backend):
 
 def init():
     import os
-    from ..bab import options
-    from ..bab import enotify
+    from ...bab import options
+    from ...bab import enotify
     orig_dir = os.getcwd()
     options.load_global_options()
     reset_scm_ifce()
     if SCM.in_valid_wspce:
         root = SCM.get_playground_root()
         os.chdir(root)
-        from ..scm_gui import scm_wspce
-        from ..gtx import recollect
+        from . import scm_wspce
+        from ...gtx import recollect
         scm_wspce.add_workspace_path(root)
         recollect.set("workspace", "last_used", root)
     reset_pm_ifce()
     curr_dir = os.getcwd()
     options.reload_pgnd_options()
-    from ..gtx.console import LOG
+    from ...gtx.console import LOG
     LOG.start_cmd("Working Directory: {0}\n".format(curr_dir))
     if SCM.in_valid_wspce:
         LOG.append_stdout('In valid repository\n')
@@ -263,11 +263,11 @@ def init():
     if not os.path.samefile(orig_dir, curr_dir):
         enotify.notify_events(enotify.E_CHANGE_WD, new_wd=curr_dir)
     else:
-        from ..scm import E_NEW_SCM
+        from .. import E_NEW_SCM
         try:
             from ..pm import E_NEW_PM
             enotify.notify_events(E_NEW_SCM|E_NEW_PM)
         except ImportError:
             enotify.notify_events(E_NEW_SCM)
-    from ..gtx import auto_update
+    from ...gtx import auto_update
     auto_update.set_initialize_event_flags(check_interfaces)

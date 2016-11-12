@@ -19,10 +19,10 @@ import os
 
 from gi.repository import Gtk
 
-from .. import wsm_icons
+from ... import wsm_icons
 
-from ..scm_gui import scm_gui_ifce
-from ..scm_gui import scm_wspce
+from . import scm_gui_ifce
+from . import scm_wspce
 
 # NB: this relies on dialogue.ClientMixin or equivalent also bein "mixed in"
 class DoOpnMixin:
@@ -33,7 +33,7 @@ class DoOpnMixin:
             return None
         elif len(available_backends) == 1:
             return available_backends[0]
-        from ..gtx import dialogue
+        from ...gtx import dialogue
         return self.choose_from_list(alist=available_backends, prompt=_("Choose SCM back end:"))
     def scm_do_create_new_wspce(self):
         req_backend = self.scm_choose_backend()
@@ -58,7 +58,7 @@ class DoOpnMixin:
         req_backend = self.scm_choose_backend()
         if not req_backend:
             return
-        from ..scm_gui import scm_repos
+        from . import scm_repos
         clone_dialog = scm_repos.RepoSelectDialog(self.get_toplevel())
         if clone_dialog.run() == Gtk.ResponseType.OK:
             cloned_path = clone_dialog.get_path()
@@ -87,7 +87,7 @@ class DoOpnMixin:
             result = scm_gui_ifce.SCM.do_push_to_repo(None)
         self.report_any_problems(result)
     def populate_action_groups(self):
-        from ..gtx.actions import AC_DONT_CARE
+        from ...gtx.actions import AC_DONT_CARE
         from .scm_actions import AC_NOT_IN_SCM_PGND, AC_IN_SCM_PGND
         self.action_groups[AC_DONT_CARE].add_actions(
             [

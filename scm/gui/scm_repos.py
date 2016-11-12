@@ -20,12 +20,15 @@ import urllib.parse
 
 from gi.repository import Gtk
 
-from ..bab import utils
+from ...bab import utils
 
-from ..gtx import apath
-from ..gtx import gutils
+from ...gtx import apath
+from ...gtx import gutils
 
-from ... import CONFIG_DIR_PATH
+try:
+    from ... import CONFIG_DIR_PATH
+except ImportError:
+    from .... import CONFIG_DIR_PATH
 
 class RepoPathView(apath.AliasPathView):
     SAVED_FILE_NAME = os.path.join(CONFIG_DIR_PATH, "repositories")

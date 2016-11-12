@@ -17,12 +17,12 @@
 Workspace status action groups
 '''
 
-from .. import scm
-from ..scm_gui import scm_gui_ifce
+from ... import scm
+from . import scm_gui_ifce
 
-from ..bab import enotify
+from ...bab import enotify
 
-from ..gtx import actions
+from ...gtx import actions
 
 AC_NOT_IN_SCM_PGND, AC_IN_SCM_PGND, AC_IN_SCM_PGND_MASK = actions.ActionCondns.new_flags_and_mask(2)
 

@@ -19,10 +19,13 @@ import os
 
 from gi.repository import Gtk
 
-from ..gtx import actions
-from ..gtx import apath
+from ...gtx import actions
+from ...gtx import apath
 
-from ... import CONFIG_DIR_PATH
+try:
+    from ... import CONFIG_DIR_PATH
+except ImportError:
+    from .... import CONFIG_DIR_PATH
 
 class WorkspacePathView(apath.AliasPathView):
     SAVED_FILE_NAME = os.path.join(CONFIG_DIR_PATH, "workspaces")
@@ -42,7 +45,7 @@ def add_workspace_path(path):
     return WorkspacePathView.append_saved_path(path)
 
 def chdir(newdir):
-    from ..bab import CmdResult
+    from ...bab import CmdResult
     events = 0
     try:
         os.chdir(newdir)
@@ -54,16 +57,16 @@ def chdir(newdir):
         retval = CmdResult.error(stderr="{0}: \"{1}\" : {2}".format(ecode, newdir, emsg))
         newdir = os.getcwd()
     # NB regardless of success of os.chdir() we need to check the interfaces
-    from ..bab import enotify
-    from ..bab import options
-    from ..gtx.console import LOG
-    from ..scm_gui import scm_gui_ifce
+    from ...bab import enotify
+    from ...bab import options
+    from ...gtx.console import LOG
+    from . import scm_gui_ifce
     scm_gui_ifce.reset_scm_ifce()
     if scm_gui_ifce.SCM.in_valid_wspce:
         # move down to the root dir
         newdir = scm_gui_ifce.SCM.get_playground_root()
         os.chdir(newdir)
-        from ..gtx import recollect
+        from ...gtx import recollect
         WorkspacePathView.append_saved_path(newdir)
         recollect.set("workspace", "last_used", newdir)
     scm_gui_ifce.reset_pm_ifce()
