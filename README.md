@@ -1,3 +1,3 @@
-# pysm_wsm
-Git submodule supporting development of workspace management tools
-
+# pysm_scm
+Git submodule providing generic source control mechanisms
+supporting development of workspace management tools
