@@ -15,9 +15,9 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-'''
+"""
 Provide an interface for the CLI to access the SCM controlling the source
-'''
+"""
 
 _BACKEND = {}
 _MISSING_BACKEND = {}
@@ -29,9 +29,9 @@ def add_back_end(newifce):
         _MISSING_BACKEND[newifce.name] = newifce
 
 def backend_requirements():
-    msg = _('No back ends are available. SCM systems:') + os.linesep
+    msg = _("No back ends are available. SCM systems:") + os.linesep
     for key in list(_MISSING_BACKEND.keys()):
-        msg += '\t' + _MISSING_BACKEND[key].requires() + os.linesep
+        msg += "\t" + _MISSING_BACKEND[key].requires() + os.linesep
     msg += _("are the ones that are usnderstood.")
     return msg
 
@@ -58,17 +58,17 @@ class _NULL_BACKEND:
     in_valid_wspce = False
     @staticmethod
     def get_files_with_uncommitted_changes(files=None):
-        '''
+        """
         Get the subset of files which have uncommitted SCM changes.  If files
         is None assume all files in current directory.
-        '''
+        """
         return []
     @staticmethod
     def do_import_patch(patch_file_name):
         return NotImplemented
     @staticmethod
     def is_ready_for_import():
-        '''
+        """
         Is the SCM in a position to accept an import?
-        '''
+        """
         return (False, _("No (or unsupported) underlying SCM."))

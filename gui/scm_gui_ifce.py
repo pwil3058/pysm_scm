@@ -15,9 +15,9 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-'''
+"""
 Provide an interface for the GUI to access the SCM controlling the source
-'''
+"""
 
 from ...gtx.table import NullTableData as DummyTableData
 
@@ -31,9 +31,9 @@ def add_back_end(newifce):
         _MISSING_BACKEND[newifce.name] = newifce
 
 def backend_requirements():
-    msg = _('No back ends are available. SCM systems:') + os.linesep
+    msg = _("No back ends are available. SCM systems:") + os.linesep
     for key in list(_MISSING_BACKEND.keys()):
-        msg += '\t' + _MISSING_BACKEND[key].requires() + os.linesep
+        msg += "\t" + _MISSING_BACKEND[key].requires() + os.linesep
     msg += _("are the ones that are usnderstood.")
     return msg
 
@@ -69,7 +69,7 @@ def choose_scm_backend():
     elif len(bel) == 1:
         return bel[0]
     from ...gtx import dialogue
-    return dialogue.SelectFromListDialog(olist=bel, prompt=_('Choose SCM back end:')).make_selection()
+    return dialogue.SelectFromListDialog(olist=bel, prompt=_("Choose SCM back end:")).make_selection()
 
 class _NULL_BACKEND:
     name = "os"
@@ -78,15 +78,15 @@ class _NULL_BACKEND:
     pgnd_is_mutable = False
     @staticmethod
     def copy_clean_version_to(filepath, target_name):
-        '''
+        """
         Copy a clean version of the named file to the specified target
-        '''
+        """
         assert False, "Should not be called for null interface"
     @staticmethod
     def do_import_patch(patch_filepath):
-        '''
+        """
         Copy a clean version of the named file to the specified target
-        '''
+        """
         assert False, "Should not be called for null interface"
     @staticmethod
     def get_author_name_and_email():
@@ -111,16 +111,16 @@ class _NULL_BACKEND:
         return False
     @staticmethod
     def get_file_status_digest():
-        '''
+        """
         Get the Sha1 digest of the SCM view of the files' status
-        '''
+        """
         return None
     @staticmethod
     def get_files_with_uncommitted_changes(files=None):
-        '''
+        """
         Get the subset of files which have uncommitted SCM changes.  If files
         is None assume all files in current directory.
-        '''
+        """
         return []
     @staticmethod
     def get_heads_data():
@@ -146,10 +146,10 @@ class _NULL_BACKEND:
         return DummyTableData()
     @staticmethod
     def get_revision(filepath=None):
-        '''
+        """
         Return the SCM revision for the named file or the whole playground
         if the filepath is None
-        '''
+        """
         return None
     @staticmethod
     def get_stashes_table_data():
@@ -159,16 +159,16 @@ class _NULL_BACKEND:
         return DummyTableData()
     @staticmethod
     def get_wd_file_db():
-        '''
+        """
         Get the SCM view of the current directory
-        '''
+        """
         from ...gtx import fsdb
         return fsdb.OsFileDb()
     @staticmethod
     def is_ready_for_import():
-        '''
+        """
         Is the SCM in a position to accept an import?
-        '''
+        """
         return (False, _("No (or unsupported) underlying SCM."))
 
 SCM = _NULL_BACKEND
@@ -255,9 +255,9 @@ def init():
     from ...gtx.console import LOG
     LOG.start_cmd("Working Directory: {0}\n".format(curr_dir))
     if SCM.in_valid_wspce:
-        LOG.append_stdout('In valid repository\n')
+        LOG.append_stdout("In valid repository\n")
     else:
-        LOG.append_stderr('NOT in valid repository\n')
+        LOG.append_stderr("NOT in valid repository\n")
     LOG.end_cmd()
     # NB: need to send either enotify.E_CHANGE_WD or E_NEW_SCM|E_NEW_PM to ensure action sates get set
     if not os.path.samefile(orig_dir, curr_dir):

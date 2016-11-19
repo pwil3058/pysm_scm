@@ -76,9 +76,9 @@ def chdir(newdir):
     LOG.append_stdout(retval.stdout)
     LOG.append_stderr(retval.stderr)
     if scm_gui_ifce.SCM.in_valid_wspce:
-        LOG.append_stdout('In valid repository\n')
+        LOG.append_stdout("In valid repository\n")
     else:
-        LOG.append_stderr('NOT in valid repository\n')
+        LOG.append_stderr("NOT in valid repository\n")
     LOG.end_cmd()
     enotify.notify_events(enotify.E_CHANGE_WD, new_wd=CURDIR)
     return retval
