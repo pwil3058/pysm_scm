@@ -19,6 +19,8 @@
 Provide an interface for the GUI to access the SCM controlling the source
 """
 
+import os
+
 from ...gtx.table import NullTableData as DummyTableData
 
 _BACKEND = {}
@@ -172,10 +174,13 @@ class _NULL_BACKEND:
 
 SCM = _NULL_BACKEND
 
-def reset_scm_ifce(dir_path=None):
+def get_scm_ifce_for_dir(abs_dir_path, default=_NULL_BACKEND):
+    bname = playground_type(abs_dir_path)
+    return _BACKEND[bname] if bname else default
+
+def reset_scm_ifce():
     global SCM
-    pgt = playground_type(dir_path)
-    SCM = _NULL_BACKEND if pgt is None else _BACKEND[pgt]
+    SCM = get_scm_ifce_for_dir(None)
     return SCM
 
 def reset_pm_ifce(events=0):

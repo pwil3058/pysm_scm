@@ -34,7 +34,8 @@ class WorkspacePathView(apath.AliasPathView):
         from . import scm_gui_ifce
         path = os.path.expanduser(path)
         if os.path.exists(path):
-            return scm_gui_ifce.playground_type(path) is not None
+            SCM = scm_gui_ifce.get_scm_ifce_for_dir(path, default=None)
+            return SCM and not SCM.is_sub_repo(path)
         return False
 
 class WorkspacePathTable(apath.AliasPathTable):
@@ -49,7 +50,6 @@ def generate_chdir_to_workspace_menu(label=_("Change Directory To")):
     return WorkspacePathView.generate_alias_path_menu(label, lambda newtgnd: chdir(newtgnd))
 
 def add_workspace_path(path):
-    # TODO: think about weeding out submodules/subrepos here
     return WorkspacePathView.append_saved_path(path)
 
 def chdir(newdir):
