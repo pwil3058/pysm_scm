@@ -46,7 +46,6 @@ def avail_backends():
 
 def playground_type(dir_path=None):
     # TODO: cope with nested playgrounds of different type and go for closest
-    # TODO: give preference to quilt if both found to allow quilt to be used on hg?
     for bname in list(_BACKEND.keys()):
         if _BACKEND[bname].dir_is_in_valid_pgnd(dir_path):
             return bname

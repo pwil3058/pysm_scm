@@ -29,6 +29,13 @@ except ImportError:
 
 class WorkspacePathView(apath.AliasPathView):
     SAVED_FILE_NAME = os.path.join(CONFIG_DIR_PATH, "workspaces")
+    @staticmethod
+    def _extant_path(path):
+        from . import scm_gui_ifce
+        path = os.path.expanduser(path)
+        if os.path.exists(path):
+            return scm_gui_ifce.playground_type(path) is not None
+        return False
 
 class WorkspacePathTable(apath.AliasPathTable):
     VIEW = WorkspacePathView
@@ -42,6 +49,7 @@ def generate_chdir_to_workspace_menu(label=_("Change Directory To")):
     return WorkspacePathView.generate_alias_path_menu(label, lambda newtgnd: chdir(newtgnd))
 
 def add_workspace_path(path):
+    # TODO: think about weeding out submodules/subrepos here
     return WorkspacePathView.append_saved_path(path)
 
 def chdir(newdir):
@@ -67,7 +75,7 @@ def chdir(newdir):
         newdir = scm_gui_ifce.SCM.get_playground_root()
         os.chdir(newdir)
         from ...gtx import recollect
-        WorkspacePathView.append_saved_path(newdir)
+        add_workspace_path(newdir)
         recollect.set("workspace", "last_used", newdir)
     scm_gui_ifce.reset_pm_ifce()
     options.reload_pgnd_options()
