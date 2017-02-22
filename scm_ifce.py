@@ -29,9 +29,9 @@ def add_back_end(newifce):
         _MISSING_BACKEND[newifce.name] = newifce
 
 def backend_requirements():
-    msg = _("No back ends are available. SCM systems:") + os.linesep
+    msg = _("No back ends are available. SCM systems:\n")
     for key in list(_MISSING_BACKEND.keys()):
-        msg += "\t" + _MISSING_BACKEND[key].requires() + os.linesep
+        msg += "\t" + _MISSING_BACKEND[key].requires() + "\n"
     msg += _("are the ones that are usnderstood.")
     return msg
 
